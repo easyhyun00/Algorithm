@@ -51,3 +51,15 @@ Empty
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+
+## 다른 사람 풀이
+### 문자열 사용
+
+```
+function solution(n) {
+    var answer = 0;
+    String(n).split('').map(data => answer += parseInt(data));
+    return answer;
+}
+```
