@@ -1,10 +1,9 @@
 function solution(sizes) {
-    let width = 0;
-    let height = 0;
+    let result = [0, 0]
     sizes.map((item)=>{
         item.sort((a,b)=>b-a)
-        if(width < item[0]) width = item[0]
-        if(height < item[1]) height = item[1]
+        if(result[0] < item[0]) result[0] = item[0]
+        if(result[1] < item[1]) result[1] = item[1]
     })
-    return width * height;
+    return result[0] * result[1];
 }
