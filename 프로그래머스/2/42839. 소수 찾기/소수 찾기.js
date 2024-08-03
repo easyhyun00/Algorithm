@@ -4,7 +4,7 @@ function solution(numbers) {
     
     // 탐색 함수
     const dfs = (num) => {
-        if (num.length > 0) result.add(Number(num));
+        if (num > 0) result.add(Number(num));
 
         for(let i=0; i<numbers.length; i++) {
             if(!isVisited[i]) {
