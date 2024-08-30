@@ -32,5 +32,5 @@ function solution(n, edge) {
     }
     const max = Math.max(...visited);
     
-    return visited.filter((v) => v === max).length;
+    return visited.filter((distance) => distance === max).length;
 }
