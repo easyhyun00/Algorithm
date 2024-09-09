@@ -13,16 +13,12 @@ function solution(input) {
 function isPalindrome(string) {
   let cnt = 0;
   let result;
+  let len = string.length;
 
-  for (let i = 0; i <= string.length / 2; i++) {
+  for (let i = 0; i <= len / 2; i++) {
     cnt++;
-    result = recursion(string[i], string[string.length - 1 - i], cnt);
+    result = string[i] === string[len - 1 - i] ? 1 : 0;
     if (result === 0) break;
   }
   return [result, cnt];
-}
-
-function recursion(left, right) {
-  if (left === right) return 1;
-  else return 0;
 }
