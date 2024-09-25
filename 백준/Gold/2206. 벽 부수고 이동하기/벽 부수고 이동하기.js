@@ -7,8 +7,8 @@ const input = require('fs')
 const [N, M] = input[0].split(' ').map(Number);
 const Maps = input.slice(1).map((el) => el.split('').map(Number));
 // 벽 뿌순 여부까지 포함해서 3차원 배열로 만듦
-const visited = Array.from({ length: N }, () =>
-  Array.from({ length: M }, () => Array(2).fill(false))
+const visited = Array.from(Array(N), () =>
+  Array.from(Array(M), () => Array(2).fill(false))
 );
 
 // 상하좌우
