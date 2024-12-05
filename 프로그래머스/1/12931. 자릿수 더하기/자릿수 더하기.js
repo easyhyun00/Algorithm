@@ -1,4 +1,4 @@
 function solution(n)
 {
-    return n.toString().split('').map(Number).reduce((acc,cur)=>acc+cur);
+    return n.toString().split('').reduce((acc,cur)=>acc+Number(cur),0);
 }
