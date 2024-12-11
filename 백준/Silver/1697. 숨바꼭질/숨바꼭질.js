@@ -1,32 +1,33 @@
 const input = require('fs')
-  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .readFileSync('/dev/stdin')
   .toString()
   .trim()
-  .split(' ');
+  .split(' ')
+  .map(Number);
 
-const N = Number(input[0]);
-const K = Number(input[1]);
+const [N, K] = input;
 
-function BFS(sum, count) {
-  const visited = Array(100001).fill(false);
-  const queue = [[sum, count]];
-  visited[sum] = true;
+const visited = new Array(K*2+1).fill(false);
 
-  while (queue.length) {
-    const [current, time] = queue.shift();
+const BFS = () => {
+  const queue = [[N, 0]];
+  visited[N] = true;
+    
+  let index = 0;
+  while (queue.length > index) {
+    const [current, count] = queue[index++];
 
-    if (current === K) {
-      return time;
-    }
+    if (current === K) return count;
 
-    const nextPositions = [current - 1, current + 1, current * 2];
-    for (const next of nextPositions) {
-      if (next >= 0 && next <= 100000 && !visited[next]) {
-        visited[next] = true;
-        queue.push([next, time + 1]);
+    const direction = [current - 1, current + 1, current * 2];
+
+    direction.forEach((position) => {
+      if (!visited[position] && position >= 0 && position <= 100000) {
+        queue.push([position, count + 1]);
+        visited[position] = true;
       }
-    }
+    });
   }
-}
+};
 
-console.log(BFS(N, 0));
+console.log(BFS());
