@@ -1,23 +1,22 @@
 const input = require('fs')
   .readFileSync('/dev/stdin')
   .toString()
+  .trim()
   .split('\n')
-  .map(Number);
+  .map(Number)
+  .sort((a, b) => a - b);
 
-const sum = input.reduce((acc, cur) => acc + cur, 0);
+const total_sum = input.reduce((a, c) => a + c);
+const sum = total_sum - 100;
+let result;
 
-let result = [];
-
-for (let i = 0; i < 8; i++) {
-  for (let j = i + 1; j < 9; j++) {
-    if (input[i] + input[j] === sum - 100) {
-      result = input.filter((item) => {
-        if (item !== input[i] && item !== input[j]) {
-          return item;
-        }
-      });
+for (let i = 0; i < input.length - 1; i++) {
+  for (let j = i + 1; j < input.length; j++) {
+    if (input[i] + input[j] === sum) {
+      result = input.filter((_, idx) => idx !== i && idx !== j);
+      break;
     }
   }
 }
 
-console.log(result.sort((a, b) => a - b).join('\n'));
+console.log(result.join('\n'));
