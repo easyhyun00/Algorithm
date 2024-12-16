@@ -1,27 +1,27 @@
 const input = require('fs')
-  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .readFileSync('/dev/stdin')
   .toString()
-  .split(' ');
+  .trim()
+  .split(' ')
+  .map(Number);
 
-const N = Number(input[0]);
-const M = Number(input[1]);
+const [N, M] = input;
 
-const Numbers = [];
-for (let i = 1; i < N + 1; i++) {
-  Numbers.push(i);
-}
+const visited = new Array(N + 1).fill(false);
 
-function backtrack(list) {
-  if (list.length === M) {
-    console.log(list.join(' '));
+const BFS = (len, arr) => {
+  if (len === M) {
+    console.log(arr.join(' '));
     return;
   }
 
-  for (let i = 0; i < N; i++) {
-    if (list.includes(Numbers[i])) continue;
-
-    backtrack([...list, Numbers[i]], i + 1);
+  for (let i = 1; i <= N; i++) {
+    if (!visited[i]) {
+      visited[i] = true;
+      BFS(len + 1, [...arr, i]);
+      visited[i] = false;
+    }
   }
-}
+};
 
-backtrack([]);
+BFS(0, []);
