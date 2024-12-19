@@ -1,32 +1,26 @@
 const input = require('fs')
-  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .readFileSync('/dev/stdin')
   .toString()
   .trim()
   .split('\n')
   .map((el) => el.split(' ').map(Number));
 
-solution(input);
+const [N] = input[0];
+const array = input.slice(1);
 
-function solution(input) {
-  let N = input[0][0];
-  let result = 0;
+let result = 0;
 
-  function dfs(index, money) {
-    if (index >= N) {
-      result = Math.max(result, money);
-      return;
-    }
-
-    let [T, P] = input[index + 1];
-
-    if (index + T <= N) {
-      dfs(index + T, money + P);
-    }
-
-    dfs(index + 1, money);
+const getProfit = (day, sum) => {
+  if (day <= N) {
+    result = Math.max(result, sum);
   }
 
-  dfs(0, 0);
+  for (let i = day; i < array.length; i++) {
+    if (i + array[i][0] <= N) {
+      getProfit(i + array[i][0], sum + array[i][1]);
+    }
+  }
+};
 
-  console.log(result);
-}
+getProfit(0, 0);
+console.log(result);
