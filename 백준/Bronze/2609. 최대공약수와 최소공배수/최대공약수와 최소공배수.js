@@ -7,31 +7,27 @@ const input = require('fs')
 
 const [A, B] = input;
 
-// 최대공약수
-const min = Math.min(A, B);
-let result = 0;
+/**
+ * [유클리드 호제법]
+ * 두 수의 최대공약수는 작은 수와 두 수의 차의 최대공약수와 같다.
+ *
+ * [최대공약수]
+ * 1. GCD(24, 18): 24 mod 18 = 6
+ * 2. GCD(18, 6): 18 mod 6 = 0
+ * 3. 결과: 6
+ *
+ * [최소공배수]
+ * LCM = (A x B) / GCD
+ */
+let i = A;
+let j = B;
 
-for (let i = 1; i <= min; i++) {
-  if (A % i === 0 && B % i === 0) {
-    result = i;
+while (i % j !== 0) {
+  let n = i % j;
+  if (n !== 0) {
+    i = j;
+    j = n;
   }
 }
-
-// 최소공배수
-let copyA = A;
-let copyB = B;
-
-while (1) {
-  if (copyA === copyB) {
-    break;
-  }
-
-  if (copyA > copyB) {
-    copyB += B;
-  } else {
-    copyA += A;
-  }
-}
-
-console.log(result);
-console.log(copyA);
+console.log(j);
+console.log((A * B) / j);
