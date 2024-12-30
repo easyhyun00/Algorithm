@@ -19,15 +19,19 @@ const [A, B] = input;
  * [최소공배수]
  * LCM = (A x B) / GCD
  */
-let i = A;
-let j = B;
+let i = Math.max(A, B);
+let j = Math.min(A, B);
 
-while (i % j !== 0) {
-  let n = i % j;
-  if (n !== 0) {
-    i = j;
-    j = n;
+while (1) {
+  const n = i % j;
+
+  if (n === 0) {
+    break;
   }
+
+  i = j;
+  j = n;
 }
+
 console.log(j);
 console.log((A * B) / j);
