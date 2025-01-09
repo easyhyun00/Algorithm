@@ -1,57 +1,72 @@
 const input = require('fs')
-  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .readFileSync('/dev/stdin')
   .toString()
   .trim()
   .split('\n')
   .map((el) => el.split(' ').map(Number));
 
-const M = input[0][0];
-const N = input[0][1];
+const [M, N] = input[0];
+const map = input.slice(1);
 
-const Maps = input.slice(1);
+/**
+ * 하루가 지나면,
+ * 익은 토마토 인전한 곳이 익는다. (상하좌우)
+ * 며칠 지나야 토마토가 익는지
+ * => BFS
+ *
+ * 1: 익음, 0: 안 익음, -1: 비었음
+ *
+ * 만약 다 안 익으면 -1 반환 (안 익은 개수가 1이상이면 -1)
+ */
 
-const direction = [
+const directions = [
   [-1, 0],
   [1, 0],
   [0, -1],
   [0, 1],
 ];
 
-let queue = [];
+const visited = Array.from({ length: N }, () => Array(M).fill(false));
+
+let unFruits = 0;
 let result = 0;
-let unCount = 0;
+
+const queue = [];
 
 for (let i = 0; i < N; i++) {
   for (let j = 0; j < M; j++) {
-    if (Maps[i][j] === 1) {
+    if (map[i][j] === 1 && !visited[i][j]) {
       queue.push([i, j, 0]);
-    } else if (Maps[i][j] === 0) {
-      unCount++;
+      visited[i][j] = true;
+    } else if (map[i][j] === 0) {
+      unFruits++;
     }
   }
 }
 
-let head = 0;
-while (queue.length > head) {
-  const [x, y, cnt] = queue[head++];
-  result = cnt;
+let index = 0;
+while (queue.length > index) {
+  const [x, y, day] = queue[index++];
 
-  direction.forEach(([xd, yd]) => {
-    const newX = x + xd;
-    const newY = y + yd;
+  directions.forEach(([a, b]) => {
+    const newX = a + x;
+    const newY = b + y;
 
     if (
       newX >= 0 &&
       newX < N &&
       newY >= 0 &&
       newY < M &&
-      Maps[newX][newY] === 0
+      map[newX][newY] === 0 &&
+      !visited[newX][newY]
     ) {
-      Maps[newX][newY] = 1;
-      queue.push([newX, newY, cnt + 1]);
-      unCount--;
+      map[newX][newY] = 1;
+      visited[newX][newY] = true;
+      queue.push([newX, newY, day + 1]);
+      unFruits--;
     }
   });
+  result = day;
 }
 
-console.log(unCount > 0 ? -1 : result);
+console.log(unFruits === 0 ? result : -1);
