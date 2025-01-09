@@ -1,60 +1,61 @@
 const input = require('fs')
-  .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+  .readFileSync('/dev/stdin')
   .toString()
+  .trim()
   .split('\n')
-  .map((item) => item.split(' ').map(Number));
+  .map((el) => el.split(' ').map(Number));
 
-for (let c = 0; c < input[0][0]; c++) {
-  const I = input[3 * c + 1][0];
-  const current = input[3 * c + 2];
-  const target = input[3 * c + 3];
+const [C] = input[0];
 
-  const visited = Array.from(Array(I), () => Array(I).fill(false));
+let index = 1;
 
-  const directions = [
-    [-2, -1],
-    [-2, 1],
-    [2, -1],
-    [2, 1],
-    [-1, -2],
-    [1, -2],
-    [-1, 2],
-    [1, 2],
-  ];
+const directions = [
+  [-2, 1],
+  [-1, 2],
+  [2, 1],
+  [1, 2],
+  [2, -1],
+  [1, -2],
+  [-1, -2],
+  [-2, -1],
+];
 
-  function BFS(x, y, move) {
-    const queue = [[x, y, move]];
-    visited[x][y] = true;
+const BFS = (a, b, visited, L, a1, b1) => {
+  const queue = [[a, b, 0]];
+  visited[a][b] = true;
 
-    if (x === target[0] && y === target[1]) {
-      return 0;
+  while (queue.length) {
+    const [x, y, cnt] = queue.shift();
+
+    if (x === a1 && y === b1) {
+      return cnt;
     }
 
-    while (queue.length) {
-      const [i, j, mv] = queue.shift();
+    directions.forEach(([i, j]) => {
+      const newX = x + i;
+      const newY = y + j;
 
-      for (let [a, b] of directions) {
-        const newX = a + i;
-        const newY = b + j;
-
-        if (
-          newX >= 0 &&
-          newX < I &&
-          newY >= 0 &&
-          newY < I &&
-          !visited[newX][newY]
-        ) {
-          if (newX === target[0] && newY === target[1]) {
-            return mv + 1;
-          }
-          visited[newX][newY] = true;
-          queue.push([newX, newY, mv + 1]);
-        }
+      if (
+        newX >= 0 &&
+        newX < L &&
+        newY >= 0 &&
+        newY < L &&
+        !visited[newX][newY]
+      ) {
+        visited[newX][newY] = true;
+        queue.push([newX, newY, cnt + 1]);
       }
-    }
-    return -1;
+    });
   }
+};
 
-  const result = BFS(current[0], current[1], 0);
+for (let i = 0; i < C; i++) {
+  const [L] = input[index++ + i];
+  const [a1, a2] = input[index++ + i];
+  const [b1, b2] = input[index + i];
+
+  const visited = Array.from({ length: L }, () => new Array(L).fill(false));
+
+  const result = BFS(a1, a2, visited, L, b1, b2);
   console.log(result);
 }
