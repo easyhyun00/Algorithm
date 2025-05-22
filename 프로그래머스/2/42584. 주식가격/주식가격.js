@@ -1,16 +1,16 @@
+// 주식 가격
 function solution(prices) {
-    const arr = [];
+    const stack = [];
     
-    for(i=0; i<prices.length-1; i++) {
-        for(j=i+1; j<prices.length-1; j++) {
-            if (prices[i] > prices[j]) {
+    for(let i=0; i<prices.length; i++) {
+        for(let j=i+1; j<prices.length; j++) {
+            if(prices[i] > prices[j] || j === prices.length - 1) {
+                stack.push(j-i)
                 break;
             }
         }
-        arr.push(Math.abs(i-j));
     }
+    stack.push(0);
     
-    arr.push(0)
-    
-    return arr;
+    return stack;
 }
