@@ -25,8 +25,7 @@ function solution(N, stages) {
     }
     
     // 스테이지별 실패한 사용자
-    // 스테이지 번호가 있어야 하므로 객체 형태
-    let fail = {};
+    let fail = [];
     
     // 현재 스테이지를 도전했던 사용자 수
     let total = stages.length;
@@ -35,19 +34,19 @@ function solution(N, stages) {
     for(let i= 1 ; i < N + 1; i++) {
         // 현재 스테이지에 도전 중인 사람이 없으면
         if(num[i] === 0) {
-            fail[i] = 0;
+            fail.push([i,0])
             continue; // 다음으로
         }
         
         // 실패율 계산
-        fail[i] = num[i] / total;
+        fail.push([i, num[i] / total])
         
         // 다음 스테이지 도전했던 사용자 수
         total -= num[i];
     }
     
     // 실패율 높은 것부터 내림차순
-    const result = Object.entries(fail).sort((a,b)=> b[1] - a[1]);
+    const result = fail.sort((a,b)=> b[1] - a[1])
     
     // 스테이지 번호만 추출
     return result.map((item)=>Number(item[0]));
