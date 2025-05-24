@@ -32,8 +32,8 @@ function solution(dirs) {
         }
         
         // 이동 경로 추가
-        visited.push(`${x}${y}${a}${b}`) // 방향성이 없어 두가지 경우 넣어줘야 함
-        visited.push(`${a}${b}${x}${y}`) // A->B, B->A
+        visited.push([x,y,a,b].join('')); // 방향성이 없어 두가지 경우 넣어줘야 함       
+        visited.push([a,b,x,y].join('')); // A->B, B->A
         
         // 좌표 업데이트
         x = a;
